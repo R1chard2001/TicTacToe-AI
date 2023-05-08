@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe_AI
 {
-    internal abstract class ASolver
+    public abstract class ASolver
     {
         public List<Operator> Operators = new List<Operator>();
         public ASolver()

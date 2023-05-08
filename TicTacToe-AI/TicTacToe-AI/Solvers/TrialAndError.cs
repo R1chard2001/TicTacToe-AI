@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe_AI
 {
-    internal class TrialAndError : ASolver
+    public class TrialAndError : ASolver
     {
         private Random rnd = new Random();
         private Operator selectOperator(State currentState)

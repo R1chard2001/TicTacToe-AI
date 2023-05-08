@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe_AI
 {
-    internal class HeuristicSolver : ASolver
+    public class HeuristicSolver : ASolver
     {
         public override State NextMove(State currentState)
         {

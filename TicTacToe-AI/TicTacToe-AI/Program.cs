@@ -42,7 +42,7 @@ namespace TicTacToe_AI
             Console.WriteLine("Winner: " +
                 CurrentState.GetStatus());*/
 
-            Game game = new Game(new HeuristicSolver());
+            Game game = new Game(new MiniMaxSolver(5));
             game.Play();
             Console.ReadLine();
         }
