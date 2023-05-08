@@ -108,6 +108,193 @@ namespace TicTacToe_AI
             return DRAW;
         }
 
+
+        private static int WIN = 100;
+        private static int DRAW_SCORE = 50;
+        private static int LOSE = -100;
+        private static int POSSIBLE_WIN = 10;
+        private static int POSSIBLE_LOSE = -7;
+        private static int POSSIBLE_LOSE_AVOIDED = 5;
+        private static int NO_WINNING_STRAT = -1;
+
+
+        public int GetHeuristics(char player)
+        {
+            // ha már nyer akkor nagy a heurisztika
+            if (GetStatus() == player)
+            {
+                return WIN;
+            }
+            if (GetStatus() == DRAW) // döntetlen jobb mint ha vesztene
+            {
+                return DRAW_SCORE;
+            }
+            if (GetStatus() != BLANK) // ha veszít, akkor az nem jó
+            {
+                return LOSE;
+            }
+
+            int result = 0;
+            char currentPlayer;
+            char otherPlayer;
+            if (player == PLAYER1)
+            {
+                currentPlayer = PLAYER1;
+                otherPlayer = PLAYER2;
+            }
+            else
+            {
+                currentPlayer = PLAYER2;
+                otherPlayer = PLAYER1;
+            }
+            int currentCount;
+            int otherCount;
+            for (int i = 0; i < 3; i++)
+            {
+                currentCount = 0;
+                otherCount = 0;
+                // sorban megszámolja a jelenlegi és a másik játékos számát
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Board[i,j] == currentPlayer)
+                    {
+                        currentCount++;
+                    }
+                    else if (Board[i,j] == otherPlayer)
+                    {
+                        otherCount++;
+                    }
+                }
+                // kivédte a lehetséges vesztést
+                if (currentCount == 1 && otherCount == 2)
+                {
+                    result += POSSIBLE_LOSE_AVOIDED;
+                }
+                // lehetséges győzelem
+                if (currentCount == 2 && otherCount == 0)
+                {
+                    result += POSSIBLE_WIN;
+                }
+                // lehetséges vesztés
+                if (otherCount == 2 && currentCount == 0)
+                {
+                    result += POSSIBLE_LOSE;
+                }
+                // nem érdemes már abba a sorba/oszlopba/átlóba rakni
+                if (otherCount == 1)
+                {
+                    result += NO_WINNING_STRAT;
+                }
+
+                currentCount = 0;
+                otherCount = 0;
+                // oszlopban megszámolja a jelenlegi és a másik játékos számát
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Board[j, i] == currentPlayer)
+                    {
+                        currentCount++;
+                    }
+                    else if (Board[j, i] == otherPlayer)
+                    {
+                        otherCount++;
+                    }
+                }
+                // kivédte a lehetséges vesztést
+                if (currentCount == 1 && otherCount == 2)
+                {
+                    result += POSSIBLE_LOSE_AVOIDED;
+                }
+                // lehetséges győzelem
+                if (currentCount == 2 && otherCount == 0)
+                {
+                    result += POSSIBLE_WIN;
+                }
+                // lehetséges vesztés
+                if (otherCount == 2 && currentCount == 0)
+                {
+                    result += POSSIBLE_LOSE;
+                }
+                // nem érdemes már abba a sorba/oszlopba/átlóba rakni
+                if (otherCount == 1)
+                {
+                    result += NO_WINNING_STRAT;
+                }
+            }
+
+
+            // főátló heurisztikája
+            currentCount = 0;
+            otherCount = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Board[i, i] == currentPlayer)
+                {
+                    currentCount++;
+                }
+                else if (Board[i, i] == otherPlayer)
+                {
+                    otherCount++;
+                }
+            }
+            // kivédte a lehetséges vesztést
+            if (currentCount == 1 && otherCount == 2)
+            {
+                result += POSSIBLE_LOSE_AVOIDED;
+            }
+            // lehetséges győzelem
+            if (currentCount == 2 && otherCount == 0)
+            {
+                result += POSSIBLE_WIN;
+            }
+            // lehetséges vesztés
+            if (otherCount == 2 && currentCount == 0)
+            {
+                result += POSSIBLE_LOSE;
+            }
+            // nem érdemes már abba a sorba/oszlopba/átlóba rakni
+            if (otherCount == 1)
+            {
+                result += NO_WINNING_STRAT;
+            }
+
+            // mellégátló heutisztikája
+            currentCount = 0;
+            otherCount = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Board[i, 2 - i] == currentPlayer)
+                {
+                    currentCount++;
+                }
+                else if (Board[i, 2 - i] == otherPlayer)
+                {
+                    otherCount++;
+                }
+            }
+            // kivédte a lehetséges vesztést
+            if (currentCount == 1 && otherCount == 2)
+            {
+                result += POSSIBLE_LOSE_AVOIDED;
+            }
+            // lehetséges győzelem
+            if (currentCount == 2 && otherCount == 0)
+            {
+                result += POSSIBLE_WIN;
+            }
+            // lehetséges vesztés
+            if (otherCount == 2 && currentCount == 0)
+            {
+                result += POSSIBLE_LOSE;
+            }
+            // nem érdemes már abba a sorba/oszlopba/átlóba rakni
+            if (otherCount == 1)
+            {
+                result += NO_WINNING_STRAT;
+            }
+            return result;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
