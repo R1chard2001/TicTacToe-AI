@@ -46,7 +46,7 @@ namespace TicTacToe_AI
         private State PlayersMove(State currentState)
         {
             Operator op = null;
-            while (op == null || !op.IsAplicable(currentState))
+            while (op == null || !op.IsApplicable(currentState))
             {
                 int row;
                 int col;

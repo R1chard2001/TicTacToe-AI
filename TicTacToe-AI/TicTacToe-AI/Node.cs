@@ -40,22 +40,28 @@ namespace TicTacToe_AI
         }
 
 
-        public void SortChildren(char currentPlayer, bool isCurrentPlayer = true)
+        public void SortChildrenMinimax(char currentPlayer, bool isCurrentPlayer = true)
         {
             foreach (Node node in Children)
             {
-                node.SortChildren(currentPlayer, !isCurrentPlayer);
+                node.SortChildrenMinimax(currentPlayer, !isCurrentPlayer);
             }
-            if (isCurrentPlayer)
+            if (isCurrentPlayer) // ha a jelenlegi játékos lép (a gép), akkor csökkenő sorrend
             {
                 Children.Sort((x, y) => y.GetHeuristics(currentPlayer).CompareTo(x.GetHeuristics(currentPlayer)));
             }
-            else
+            else // ha a másik játékos, akkor növekvő sorrendbe rakjuk a gyerekelemek listáját
             {
                 Children.Sort((x, y) => x.GetHeuristics(currentPlayer).CompareTo(y.GetHeuristics(currentPlayer)));
             }
         }
-        public int GetHeuristics(char currentPlayer)
+        // heurisztikát a levélelemekből számítunk, majd felfele haladva a fán, a gyerekelemekből
+        // ha a következő lépésben (lejjebb lévő szint) a jelenlegi játékos (gép) jönne, akkor maximumkeresés
+        // ha a másik játékos jönne, akkor pedig minimumkeresést alkalmazunk
+        // megj.: előre rendezett listánál visszaadhatjuk az első, illetve utolsó elemet
+        //        de mivel alapból növekvő majd csökkenő sorrendbe rendezzük a gyermekek listáját szintenkéne
+        //        ezért ezt nem kell megtenni
+        public int GetHeuristics(char currentPlayer) 
         {
             if (Children.Count == 0)
             {
@@ -63,7 +69,6 @@ namespace TicTacToe_AI
             }
             return Children[0].GetHeuristics(currentPlayer);
         }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

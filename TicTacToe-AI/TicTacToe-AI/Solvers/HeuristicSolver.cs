@@ -13,18 +13,13 @@ namespace TicTacToe_AI
             List<State> states = new List<State>();
             foreach (Operator op in Operators)
             {
-                if (op.IsAplicable(currentState))
+                if (op.IsApplicable(currentState))
                 {
                     states.Add(op.Apply(currentState));
                 }
             }
             char p = currentState.CurrentPlayer;
             states.Sort((x, y) => y.GetHeuristics(p).CompareTo(x.GetHeuristics(p)));
-            List<int> ints = new List<int>();
-            foreach (State s in states)
-            {
-                ints.Add(s.GetHeuristics(p));
-            }
             return states[0];
         }
     }

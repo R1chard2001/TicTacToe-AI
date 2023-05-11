@@ -15,7 +15,7 @@ namespace TicTacToe_AI
             Row = row;
             Col = col;
         }
-        public bool IsAplicable(State state)
+        public bool IsApplicable(State state)
         {
             return state.Board[Row, Col] == State.BLANK;
         }

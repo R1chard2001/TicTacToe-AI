@@ -19,12 +19,7 @@ namespace TicTacToe_AI
         {
             Node currentNode = new Node(currentState);
             extendNode(currentNode);
-            currentNode.SortChildren(currentState.CurrentPlayer);
-            foreach (Node n in currentNode.Children)
-            {
-                Console.WriteLine(n.GetHeuristics(currentState.CurrentPlayer));
-            }
-            currentNode.GetHeuristics(currentState.CurrentPlayer);
+            currentNode.SortChildrenMinimax(currentState.CurrentPlayer);
             return currentNode.Children[0].State;
         }
 
@@ -34,7 +29,7 @@ namespace TicTacToe_AI
             
             foreach (Operator op in Operators)
             {
-                if (op.IsAplicable(node.State))
+                if (op.IsApplicable(node.State))
                 {
                     State newState = op.Apply(node.State);
                     Node newNode = new Node(newState, node);
