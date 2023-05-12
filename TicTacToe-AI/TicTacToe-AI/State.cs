@@ -117,6 +117,32 @@ namespace TicTacToe_AI
         private static int POSSIBLE_LOSE_AVOIDED = 5;
         private static int NO_WINNING_STRAT = -1;
 
+        private int CalculateHeuristic(int currentCount, int otherCount)
+        {
+            int result = 0;
+            // kivédte a lehetséges vesztést
+            if (currentCount == 1 && otherCount == 2)
+            {
+                result += POSSIBLE_LOSE_AVOIDED;
+            }
+            // lehetséges győzelem
+            if (currentCount == 2 && otherCount == 0)
+            {
+                result += POSSIBLE_WIN;
+            }
+            // lehetséges vesztés
+            if (otherCount == 2 && currentCount == 0)
+            {
+                result += POSSIBLE_LOSE;
+            }
+            // nem érdemes már abba a sorba/oszlopba/átlóba rakni
+            if (otherCount == 1)
+            {
+                result += NO_WINNING_STRAT;
+            }
+
+            return result;
+        }
 
         public int GetHeuristics(char player)
         {
@@ -165,26 +191,7 @@ namespace TicTacToe_AI
                         otherCount++;
                     }
                 }
-                // kivédte a lehetséges vesztést
-                if (currentCount == 1 && otherCount == 2)
-                {
-                    result += POSSIBLE_LOSE_AVOIDED;
-                }
-                // lehetséges győzelem
-                if (currentCount == 2 && otherCount == 0)
-                {
-                    result += POSSIBLE_WIN;
-                }
-                // lehetséges vesztés
-                if (otherCount == 2 && currentCount == 0)
-                {
-                    result += POSSIBLE_LOSE;
-                }
-                // nem érdemes már abba a sorba/oszlopba/átlóba rakni
-                if (otherCount == 1)
-                {
-                    result += NO_WINNING_STRAT;
-                }
+                result += CalculateHeuristic(currentCount, otherCount);
 
                 currentCount = 0;
                 otherCount = 0;
@@ -200,28 +207,8 @@ namespace TicTacToe_AI
                         otherCount++;
                     }
                 }
-                // kivédte a lehetséges vesztést
-                if (currentCount == 1 && otherCount == 2)
-                {
-                    result += POSSIBLE_LOSE_AVOIDED;
-                }
-                // lehetséges győzelem
-                if (currentCount == 2 && otherCount == 0)
-                {
-                    result += POSSIBLE_WIN;
-                }
-                // lehetséges vesztés
-                if (otherCount == 2 && currentCount == 0)
-                {
-                    result += POSSIBLE_LOSE;
-                }
-                // nem érdemes már abba a sorba/oszlopba/átlóba rakni
-                if (otherCount == 1)
-                {
-                    result += NO_WINNING_STRAT;
-                }
+                result += CalculateHeuristic(currentCount, otherCount);
             }
-
 
             // főátló heurisztikája
             currentCount = 0;
@@ -236,26 +223,6 @@ namespace TicTacToe_AI
                 {
                     otherCount++;
                 }
-            }
-            // kivédte a lehetséges vesztést
-            if (currentCount == 1 && otherCount == 2)
-            {
-                result += POSSIBLE_LOSE_AVOIDED;
-            }
-            // lehetséges győzelem
-            if (currentCount == 2 && otherCount == 0)
-            {
-                result += POSSIBLE_WIN;
-            }
-            // lehetséges vesztés
-            if (otherCount == 2 && currentCount == 0)
-            {
-                result += POSSIBLE_LOSE;
-            }
-            // nem érdemes már abba a sorba/oszlopba/átlóba rakni
-            if (otherCount == 1)
-            {
-                result += NO_WINNING_STRAT;
             }
 
             // mellégátló heutisztikája
@@ -272,26 +239,7 @@ namespace TicTacToe_AI
                     otherCount++;
                 }
             }
-            // kivédte a lehetséges vesztést
-            if (currentCount == 1 && otherCount == 2)
-            {
-                result += POSSIBLE_LOSE_AVOIDED;
-            }
-            // lehetséges győzelem
-            if (currentCount == 2 && otherCount == 0)
-            {
-                result += POSSIBLE_WIN;
-            }
-            // lehetséges vesztés
-            if (otherCount == 2 && currentCount == 0)
-            {
-                result += POSSIBLE_LOSE;
-            }
-            // nem érdemes már abba a sorba/oszlopba/átlóba rakni
-            if (otherCount == 1)
-            {
-                result += NO_WINNING_STRAT;
-            }
+            result += CalculateHeuristic(currentCount, otherCount);
             return result;
         }
 
