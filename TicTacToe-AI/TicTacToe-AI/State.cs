@@ -246,18 +246,18 @@ namespace TicTacToe_AI
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("  1 2 3"); // oszlop számai
+            sb.AppendLine("    1   2   3"); // oszlop számai
             for (int i = 0; i < 3; i++)
             {
-                sb.AppendLine(" +-+-+-+");
-                sb.Append(string.Format("{0}|", i+1)); // sor száma
+                sb.AppendLine("  +---+---+---+");
+                sb.Append(string.Format("{0} |", i+1)); // sor száma
                 for (int j = 0; j < 3; j++)
                 {
-                    sb.Append(Board[i, j] + "|");
+                    sb.Append(string.Format(" {0} |",Board[i, j]));
                 }
                 sb.AppendLine();
             }
-            sb.AppendLine(" +-+-+-+");
+            sb.AppendLine("  +---+---+---+");
             sb.AppendLine("Current player: " 
                 + CurrentPlayer);
             return sb.ToString();
