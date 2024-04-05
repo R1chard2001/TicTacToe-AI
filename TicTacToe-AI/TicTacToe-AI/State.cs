@@ -225,7 +225,7 @@ namespace TicTacToe_AI
                 }
             }
 
-            // mellégátló heutisztikája
+            // mellékátló heurisztikája
             currentCount = 0;
             otherCount = 0;
             for (int i = 0; i < 3; i++)
