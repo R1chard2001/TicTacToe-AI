@@ -11,7 +11,7 @@ namespace TicTacToe_AI
 
         static void Main(string[] args)
         {
-            Game game = new Game(new MiniMaxABPruneSolver(5));
+            Game game = new Game(new MiniMaxABPruneSolver(5, false));
             game.Play();
             Console.ReadLine();
         }

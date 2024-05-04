@@ -8,9 +8,14 @@ namespace TicTacToe_AI
 {
     public class MiniMaxABPruneSolver : ASolver
     {
-        public MiniMaxABPruneSolver(int depth) : base()
+        Action<Node> BetaPrune;
+        public MiniMaxABPruneSolver(int depth, bool useSimpleBetaPrune = true) : base()
         {
             Depth = depth;
+            if (useSimpleBetaPrune)
+                BetaPrune = BetaPruneSimple;
+            else
+                BetaPrune = BetaPruneFull;
         }
         public int Depth;
 
@@ -23,23 +28,18 @@ namespace TicTacToe_AI
             Node currentNode = new Node(currentState);
             extendNode(currentNode);
             currentNode.SortChildrenMinimax(currentState.CurrentPlayer);
-            if (currentNode.Children.Count == 0) 
-                return getAPossibleNextState(currentState);
+            if (currentNode.Children.Count == 0)
+                foreach (Operator op in Operators)
+                    if (op.IsApplicable(currentState))
+                        return op.Apply(currentState);
             return currentNode.Children[0].State;
-        }
-        public State getAPossibleNextState(State state)
-        {   
-            // ha a vágások miatt nem maradna gyerekelem, akkor adja vissza a legelső valós állapotot
-            foreach (Operator op in Operators)
-                if (op.IsApplicable(state))
-                    return op.Apply(state);
-            throw new Exception("The AI can't move!");
         }
 
         private void extendNode(Node node)
         {
+            node.HasBeenExtended = true;
             if (node.GetStatus() != State.BLANK || node.Depth >= Depth) return;
-            
+
             foreach (Operator op in Operators)
             {
                 if (op.IsApplicable(node.State))
@@ -58,11 +58,36 @@ namespace TicTacToe_AI
                         return;
                     }
                     node.Children.Add(newNode);
-                    extendNode(newNode);
                 }
             }
+            Node childNode = getChildNodeToExtend(node);
+            while (childNode != null)
+            {
+                extendNode(childNode);
+                childNode = getChildNodeToExtend(node);
+            }
         }
-        private void BetaPrune(Node node)
+        private Node getChildNodeToExtend(Node parent)
+        {
+            return parent.Children.Find(x => !x.HasBeenExtended);
+        }
+        private void BetaPruneFull(Node node)
+        {
+            // "vágjuk ki" a lépésünk általi legnagyobb lehetséges ágat
+            while (node != null && node.Parent != null)
+            {
+                // node -> mi lépésünk
+                // parent -> ellenfél lépése
+                node.Children.Clear();
+                Node parent = node.Parent;
+                parent.Children.Remove(node); // eltávolítjuk a rossz lépést
+                if (parent.Children.Count > 0) // van-e másik lehetőségünk?
+                    return;
+                // ha nincs, folytassuk a vágást
+                node = parent.Parent;
+            }
+        }
+        private void BetaPruneSimple(Node node)
         {
             // "vágjuk ki" a lépésünk általi ágat
             node.Children.Clear();

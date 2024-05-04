@@ -11,8 +11,10 @@ namespace TicTacToe_AI
         public State State;
         public int Depth;
         public Node Parent;
+        public bool HasBeenExtended = false;
         public List<Node> Children = new List<Node>();
         public int OperatorIndex;
+
         public Node(State state, Node parent = null)
         {
             Parent = parent;
